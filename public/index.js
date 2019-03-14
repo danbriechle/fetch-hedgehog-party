@@ -1,9 +1,15 @@
+// function expresion
 const getHedgehogs = () => {
+  // hedge hog info class html will be filled with the response from
   $('#hedgehog-info').html('');
-
+// get request to the api
   fetch(`https://hedgehog-party.herokuapp.com/api/v1/invites`)
+  // turns the response into json
     .then(response => response.json())
+  // names the json response hedgehogs and passes it to appendHedgehogs which esentially makes the list of hedgehogs
+  // by itterating through list and adding the json info
     .then(hedgehogs => appendHedgehogs(hedgehogs))
+  // if there is an error it console logs the error
     .catch(error => console.error({ error }));
 };
 
@@ -29,8 +35,23 @@ const appendHedgehog = (hedgehog) => {
   `);
 };
 
-const addNewHedgehog = () => {
-  console.log("we are in the addNewHedgehog function");
+const addNewHedgehog = (event) => {
+event.preventDefault();
+ var name = $("#name").val();
+ var hoglets = $("#hoglets").val();
+ var allergies = $("#allergies").val();
+ fetch('https://hedgehog-party.herokuapp.com/api/v1/invites', {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify({
+     name: name,
+     hoglets: hoglets,
+     allergies: allergies
+   })
+ })
+ .then(response => response.json())
+ .then(hedgehogs => appendHedgehogs(hedgehogs))
+ .catch(error => console.error({ error }));
 };
 
 const unInviteHedgehog = () => {
